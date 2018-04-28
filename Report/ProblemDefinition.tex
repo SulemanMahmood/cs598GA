@@ -1,0 +1,14 @@
+\section{Property Definition}
+In order to model check properties of an IOT system, we need to define the properties that need to be checked. In this project, we explore safety properties in an IOT system. In general, safety properties check that system never reaches an error state. In the context of an IOT system we define an error state when there is an inconsistency between the state information stored in different components. For example: Consider an IOT system with a smart door lock which is configured to keep the user updated about its status. An unlock command is triggered based on some rules in the cloud. The door is unlocked and a notification is sent to the user about the change in status. If this notification is lost, the user will consider the door locked. Now our two components (user and smart lock) of the IOT information disagree on the state of the door. This would be an error state. 
+
+The simple definition provided above is not enough to capture an error state. In the above example, the user and the lock will have inconsistent information immediately after the door is unlocked. But this inconsistency will get resolved as soon as user receives a notification about the change. Therefore just identifying an inconsistency is not enough. In fact, we believe that in a system which doesn't have any race conditions, all inconsistencies should eventually get resolved when communication is reliable. We need to describe the property to check that inconsistencies will survive in the system. The inconsistencies can easily survive when communication is unreliable. In our example if the notification is lost, there is no way to resolve the inconsistency unless the lock status changes again and new notification is successful. In order to account for the time it takes the system to resolve the inconsistency under normal circumstances, we use the PCTL bounded until operator. In our example, the property can be described as folllows:
+
+{\centering
+$(LockStatus = open)\;  U^{\leq t}\; (LockStatus = open\:  \cap\: User_{LockStatus} = open)$\par
+}
+
+Here the time bound \textit{t} allows the system a bounded time to settle. System settling in a bounded time is a desirable property. Statistical model checking can provide probabilistic guarantees on the settling time. We can summarize two important aspects which need to be evaluated.
+\begin{enumerate}
+  \item In the face of unreliable communication, the probability that the property holds will be $<1$. How sharply does it fall in the face of unreliable communication? How do retries affect this probability?
+  \item The probability that the property holds will depend on the selected value of the bound. How does this probability varies with this bound?
+\end{enumerate}

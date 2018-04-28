@@ -1,0 +1,20 @@
+\section{Related Work}
+
+\subsection{IoT}
+Model checking for IOT systems in a relatively new application of model checking. At a conceptual  level, this is not different from applying the principals of model checking to any event driven distributed system. The challenge here is the wide variety of hardware that is available in the market. A model built for one system may no generalize to other devices performing similar tasks. Tabrizi and Pattabiraman \cite{Tabrizi} recently built a formal model for a smart energy meter and analyzed it under adversarial situation to find sequences of event which would result compromised operation. They had full access to the code running on the device to build a faithful model that could be used to expose faults. As mentioned earlier their results do not generalize to other products in the market. As far as we know, this project represents the first effort to build a statistical model of any IOT system.
+
+\subsection{Other Techniques}
+Message dropping can be considered to be an rare event. With regular
+sampling methods, such rare events can cause the required number of
+samples to be infeasible.
+
+Several methods have been proposed to overcome this issue. Importance
+sampling where the system is biased such that the rare events are more
+likely to occur is one such method. Several variations of this method
+have been implemented for multiple scenarios \cite{rajan}, \cite{ballarini}.
+
+Other methods of reducing variance also been proposed to address this
+problem \cite{Jegourel}, \cite{lecuyer}.  Applying these methods can
+help us make the evaluation more efficient. But we found that we were
+able to handle the complexity of our models without the need for
+these methods.

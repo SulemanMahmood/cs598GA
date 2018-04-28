@@ -21,22 +21,9 @@ for dir in */; do
 
     for BENCH in */; do
         cd "$BENCH"
-                
-        printf "Checking ${BENCH} ..."
+        echo $BENCH
         if [ -f a.out ]; then
-            rm a.out
-        fi
-        
-        if [ -f *.o ]; then
-            rm *.o
-        fi
-        
-        
-        # Please remove '&>/dev/null' to identify the warnings (if any)
-        $COMPILER $OPTIONS *.c # &>/dev/null
-        
-        if [ -f a.out ]; then
-            $EXEC ./a.out &>/dev/null
+            time $EXEC -v ./a.out #&>/dev/null
             RETURNVALUE=$(echo $?)
             if [ $RETURNVALUE -eq 0 ]; then
                 printf "passed. \n"
