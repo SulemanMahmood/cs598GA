@@ -117,11 +117,17 @@ int binarysearch_binary_search( int x )
   int fvalue, mid, up, low;
 
   mid = (x * 8191) / 32768;
-  low = mid - 2048;
-  up = mid + 2048;
+  low = mid;
+  up = mid;
+  if (low < 0){
+    low = 0;
+  }	
+  if (up > 8191){
+    up = 8191;
+  }
   fvalue = -1;
 
-  _Pragma( "loopbound min 1 max 13" )
+  _Pragma( "loopbound min 1 max 1" )
   while ( low <= up ) {
     mid = ( low + up ) >> 1;
 
