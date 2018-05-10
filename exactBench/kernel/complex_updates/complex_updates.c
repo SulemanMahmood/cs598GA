@@ -22,7 +22,7 @@
   Source: DSP-Stone
     http://www.ice.rwth-aachen.de/research/tools-projects/entry/detail/dspstone/
 
-  Original name: n_complex_updates_float
+  Original name: n_complex_updates_double
 
   Changes: no major functional changes
 
@@ -37,7 +37,7 @@
   Forward declaration of functions
 */
 
-void complex_updates_pin_down( float *pa, float *pb, float *pc, float *pd );
+void complex_updates_pin_down( double *pa, double *pb, double *pc, double *pd );
 void complex_updates_init( void );
 void complex_updates_main( void );
 int main( void );
@@ -47,7 +47,7 @@ int main( void );
   Declaration of global variables
 */
 
-float complex_updates_A[2 * N], complex_updates_B[2 * N],
+double complex_updates_A[2 * N], complex_updates_B[2 * N],
       complex_updates_C[2 * N], complex_updates_D[2 * N];
 
 
@@ -58,7 +58,7 @@ float complex_updates_A[2 * N], complex_updates_B[2 * N],
 void complex_updates_init( void )
 {
   int i;
-  volatile float x = 0;
+  volatile double x = 0;
 
   complex_updates_pin_down( &complex_updates_A[0], &complex_updates_B[0],
                             &complex_updates_C[0], &complex_updates_D[0] );
@@ -74,7 +74,7 @@ void complex_updates_init( void )
 }
 
 
-void complex_updates_pin_down( float *pa, float *pb, float *pc, float *pd )
+void complex_updates_pin_down( double *pa, double *pb, double *pc, double *pd )
 {
   register int i;
 
@@ -94,7 +94,7 @@ void complex_updates_pin_down( float *pa, float *pb, float *pc, float *pd )
 
 int complex_updates_return( void )
 {
-  float check_sum = 0;
+  double check_sum = 0;
   int i;
 
   for ( i = 0; i < N; i++ )
@@ -110,8 +110,8 @@ int complex_updates_return( void )
 
 void _Pragma( "entrypoint" ) complex_updates_main( void )
 {
-  register float *p_a = &complex_updates_A[0], *p_b = &complex_updates_B[0];
-  register float *p_c = &complex_updates_C[0], *p_d = &complex_updates_D[0];
+  register double *p_a = &complex_updates_A[0], *p_b = &complex_updates_B[0];
+  register double *p_c = &complex_updates_C[0], *p_d = &complex_updates_D[0];
   int i;
 
   _Pragma( "loopbound min 16 max 16" )

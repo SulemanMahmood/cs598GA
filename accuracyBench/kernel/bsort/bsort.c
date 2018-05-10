@@ -1,99 +1,39 @@
-/*
+#include"sortInput.h"
+#include<stdio.h>
+#include<math.h>
 
-  This program is part of the TACLeBench benchmark suite.
-  Version 2.0
-
-  Name: bsort
-
-  Author: unknown
-
-  Function: A program for testing the basic loop constructs,
-            integer comparisons, and simple array handling by
-            sorting 100 integers
-
-  Source: MRTC
-          http://www.mrtc.mdh.se/projects/wcet/wcet_bench/bsort100/bsort100.c
-
-  Original name: bsort100
-
-  Changes: See ChangeLog.txt
-
-  License: May be used, modified, and re-distributed freely.
-
-*/
-
-
-/*
-  Forward declaration of functions
-*/
-
-void bsort_init( void );
 void bsort_main( void );
-int bsort_return( void );
-int bsort_Initialize( int Array[] );
 int bsort_BubbleSort( int Array[] );
+int count_inversions(int Array[] );
 
+#define bsort_SIZE 1000
 
-/*
-  Declaration of global variables
-*/
-
-#define bsort_SIZE 100
-
-static int bsort_Array[ bsort_SIZE ];
-
-
-/*
-  Initialization- and return-value-related functions
-*/
-
-/* Initializes given array with randomly generated integers. */
-int bsort_Initialize( int Array[] )
-{
-  int Index;
-
-  _Pragma( "loopbound min 100 max 100" )
-  for ( Index = 0; Index < bsort_SIZE; Index ++ )
-    Array[ Index ] = ( Index + 1 ) * -1;
-
-  return 0;
+int count_inversions(int Array[] ){
+  int inversions = 0;
+  for (int i = 0; i < bsort_SIZE; i++){
+    for (int j = i; j < bsort_SIZE; j++){
+      if (Array[i] > Array[j]){
+        inversions++;
+      }
+    }
+  }
+  return inversions;
 }
 
-
-void bsort_init( void )
-{
-  bsort_Initialize( bsort_Array );
-}
-
-
-int bsort_return( void )
-{
-  int Sorted = 1;
-  int Index;
-
-  for ( Index = 0; Index < bsort_SIZE - 1; Index ++ )
-    Sorted = Sorted && ( bsort_Array[ Index ] < bsort_Array[ Index + 1 ] );
-
-  return 1 - Sorted;
-}
-
-
-/*
-  Core benchmark functions
-*/
-
-/* Sorts an array of integers of size bsort_SIZE in ascending
-   order with bubble sort. */
 int bsort_BubbleSort( int Array[] )
 {
   int Sorted = 0;
   int Temp, Index, i;
 
-  _Pragma( "loopbound min 99 max 99" )
-  for ( i = 0; i < bsort_SIZE - 1; i ++ ) {
+  for ( i = 0; i < bsort_SIZE - 1; i += 1 ) {
+    if (i % 12 == 0)
+	continue;
+
     Sorted = 1;
-    _Pragma( "loopbound min 2 max 99" )
-    for ( Index = 0; Index < bsort_SIZE - 1; Index ++ ) {
+    for ( Index = 0; Index < bsort_SIZE - 1; Index += 1 ) {
+//      if (Index % 500 == 0)
+//        continue;  
+
       if ( Index > bsort_SIZE - i )
         break;
       if ( Array[ Index ] > Array[Index + 1] ) {
@@ -111,21 +51,31 @@ int bsort_BubbleSort( int Array[] )
   return 0;
 }
 
-
-void _Pragma( "entrypoint" ) bsort_main( void )
-{
-  bsort_BubbleSort( bsort_Array );
-}
-
-
-/*
-  Main function
-*/
-
 int main( void )
 {
-  bsort_init();
-  bsort_main();
+  double accuracy[1000];
+  double average = 0.0;
+  double sd = 0.0;
+  for (int i = 0; i < 1000; i++){
+    int inversions_left;
+    bsort_BubbleSort(GlobalStructure[i].array);
+    inversions_left = count_inversions(GlobalStructure[i].array);
+    accuracy[i] = 100 - ((double)inversions_left) * 100 / ((double)GlobalStructure[i].inversions);
+  }
+  for (int i = 0; i < 1000; i++){
+    average = average + accuracy[i];
+  }
+  average = average / 1000;
 
-  return bsort_return();
+  for (int i = 0; i < 1000; i++){
+    sd = sd + (accuracy[i] - average) * (accuracy[i] - average);
+  }
+  sd = sd / 1000;
+  sd = sqrt(sd);
+  
+  printf("average accuracy is %lf \n", average);
+  printf("Standard deviation is %lf \n", sd);
+  
+	
+  return 0;
 }

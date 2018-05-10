@@ -38,7 +38,7 @@ int bsort_BubbleSort( int Array[] );
   Declaration of global variables
 */
 
-#define bsort_SIZE 100
+#define bsort_SIZE 1000
 
 static int bsort_Array[ bsort_SIZE ];
 
@@ -52,7 +52,7 @@ int bsort_Initialize( int Array[] )
 {
   int Index;
 
-  _Pragma( "loopbound min 100 max 100" )
+  _Pragma( "loopbound min 1000 max 1000" )
   for ( Index = 0; Index < bsort_SIZE; Index ++ )
     Array[ Index ] = ( Index + 1 ) * -1;
 
@@ -89,10 +89,13 @@ int bsort_BubbleSort( int Array[] )
   int Sorted = 0;
   int Temp, Index, i;
 
-  _Pragma( "loopbound min 99 max 99" )
+  _Pragma( "loopbound min 899 max 899" )
   for ( i = 0; i < bsort_SIZE - 1; i ++ ) {
+    if ( (i % 10) == 0 ){
+      continue;
+    }
     Sorted = 1;
-    _Pragma( "loopbound min 2 max 99" )
+    _Pragma( "loopbound min 2 max 999" )
     for ( Index = 0; Index < bsort_SIZE - 1; Index ++ ) {
       if ( Index > bsort_SIZE - i )
         break;
@@ -127,5 +130,5 @@ int main( void )
   bsort_init();
   bsort_main();
 
-  return bsort_return();
+  return 0;
 }
