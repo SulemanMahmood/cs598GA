@@ -26,11 +26,8 @@ def runProgram(programName):
     wcet = wcet[wcet.find("cycles:")+7:]
     wcet = int(wcet[:wcet.find("\\n")].strip())
 
-    output=programName + "," + str(executionTime) + "," + str(wcet) + '\n'
-
-    f = open('./../../../output.csv', 'a')
-    f.write(output)
-    f.close()
+    output=programName + "      " + str(executionTime) + "         " + str(wcet) + '\n'
+    print(output)
         
 def main():
     try:
