@@ -1,102 +1,13 @@
-/*
+#define MAXSIZE 100
+#include<stdio.h>
+#include<math.h>
+#include<stdlib.h>
+#include"sortInput.h"
 
-  This program is part of the TACLeBench benchmark suite.
-  Version V 2.0
+int countnegative_sum( int Array[MAXSIZE][MAXSIZE] );
+int Limit;
 
-  Name: countnegative
-
-  Author: unknown
-
-  Function: Counts negative and non-negative numbers in a
-    matrix. Features nested loops, well-structured code.
-
-  Source: MRTC
-          http://www.mrtc.mdh.se/projects/wcet/wcet_bench/cnt/cnt.c
-
-  Changes: Changed split between initialization and computation
-
-  License: May be used, modified, and re-distributed freely
-
-*/
-
-/*
-  The dimension of the matrix
-*/
-#define MAXSIZE 20
-
-/*
-  Type definition for the matrix
-*/
-typedef int matrix [MAXSIZE][MAXSIZE];
-
-/*
-  Forward declaration of functions
-*/
-void countnegative_initSeed( void );
-int countnegative_randomInteger( void );
-void countnegative_initialize( matrix );
-void countnegative_init( void );
-int countnegative_return( void );
-void countnegative_sum( matrix );
-void countnegative_main( void );
-int main( void );
-
-/*
-  Globals
-*/
-volatile int countnegative_seed;
-matrix countnegative_array;
-int countnegative_postotal, countnegative_negtotal;
-int countnegative_poscnt, countnegative_negcnt;
-
-/*
-  Initializes the seed used in the random number generator.
-*/
-void countnegative_initSeed ( void )
-{
-  countnegative_seed = 0;
-}
-
-/*
-  Generates random integers between 0 and 8094
-*/
-int countnegative_randomInteger( void )
-{
-  countnegative_seed = ( ( countnegative_seed * 133 ) + 81 ) % 8095;
-  return  countnegative_seed;
-}
-
-/*
-  Initializes the given array with random integers.
-*/
-void countnegative_initialize( matrix Array )
-{
-  register int OuterIndex, InnerIndex;
-
-  _Pragma( "loopbound min 20 max 20" )
-  for ( OuterIndex = 0; OuterIndex < MAXSIZE; OuterIndex++ )
-    _Pragma( "loopbound min 20 max 20" )
-    for ( InnerIndex = 0; InnerIndex < MAXSIZE; InnerIndex++ )
-      Array[OuterIndex][InnerIndex] =  countnegative_randomInteger();
-}
-
-void countnegative_init( void )
-{
-  countnegative_initSeed();
-  countnegative_initialize( countnegative_array );
-}
-
-int countnegative_return( void )
-{
-  int checksum = ( countnegative_postotal +
-                   countnegative_poscnt +
-                   countnegative_negtotal +
-                   countnegative_negcnt );
-
-  return ( ( checksum == ( int )0x1778de ) ? 0 : -1 );
-}
-
-void countnegative_sum( matrix Array )
+int countnegative_sum( int Array[MAXSIZE][MAXSIZE] )
 {
   register int Outer, Inner;
 
@@ -108,7 +19,7 @@ void countnegative_sum( matrix Array )
   _Pragma( "loopbound min 20 max 20" )
   for ( Outer = 0; Outer < MAXSIZE; Outer++ )
     _Pragma( "loopbound min 20 max 20" )
-    for ( Inner = 0; Inner < MAXSIZE; Inner++ )
+    for ( Inner = 0; Inner < Limit; Inner++ )
       if ( Array[Outer][Inner] >= 0 ) {
         Ptotal += Array[Outer][Inner];
         Pcnt++;
@@ -117,24 +28,35 @@ void countnegative_sum( matrix Array )
         Ncnt++;
       }
 
-  countnegative_postotal = Ptotal;
-  countnegative_poscnt = Pcnt;
-  countnegative_negtotal = Ntotal;
-  countnegative_negcnt = Ncnt;
+  return (Ncnt * MAXSIZE) / Limit;
 }
 
-/*
-  The main function
-*/
-void _Pragma( "entrypoint" ) countnegative_main ( void )
+int main(int argc, char** argv )
 {
-  countnegative_sum(  countnegative_array );
-}
+  double accuracy[1000];
+  double average = 0.0;
+  double sd = 0.0;
+  Limit = atoi(argv[1]);
+  
+  for (int i = 0; i < 1000; i++){
+    int count;
+    count = countnegative_sum(GlobalStructure[i].array);
+    accuracy[i] = 100 - ((double)(abs(count - GlobalStructure[i].negatives )) * 100 / (double)(GlobalStructure[i].negatives));
+  }
+  for (int i = 0; i < 1000; i++){
+    average = average + accuracy[i];
+  }
+  average = average / 1000;
 
-int main( void )
-{
-  countnegative_init();
-  countnegative_main();
+  for (int i = 0; i < 1000; i++){
+    sd = sd + (accuracy[i] - average) * (accuracy[i] - average);
+  }
+  sd = sd / 1000;
+  sd = sqrt(sd);
 
-  return ( countnegative_return() );
+  printf("average accuracy is %lf \n", average);
+  printf("Standard deviation is %lf \n", sd);
+
+
+  return 0;
 }
