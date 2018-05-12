@@ -1,3 +1,4 @@
 Assumption: Input is from a uniform distribution. BinarySearch is searching an array of 8192 elements. Accuracy measured over 10000 samples.
 BubbleSort is sorting an array of 1000 elements. Accuracy is average of sorting 1000 arrays. Measure standard deviation.
+Count Negative is counting negatives in a 100 by 100 array. Accuracy is average over 1000 100 by 100 arrays. standard deviation measured.
 
