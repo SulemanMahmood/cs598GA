@@ -30,9 +30,9 @@
     Forward declaration of functions
 */
 
-int minver_minver( int side, double eps );
+int minver_minver( int side, float eps );
 int minver_mmul( int row_a, int col_a, int row_b, int col_b );
-double minver_fabs( double n );
+float minver_fabs( float n );
 void minver_init();
 int minver_return();
 void minver_main();
@@ -42,25 +42,25 @@ int main( void );
     Declaration of global variables
 */
 
-double  minver_a[ 3 ][ 3 ] = {
+float  minver_a[ 3 ][ 3 ] = {
   {3.0, -6.0,  7.0},
   {9.0,  0.0, -5.0},
   {5.0, -8.0,  6.0},
 };
-double minver_b[ 3 ][ 3 ];
-double minver_c[ 3 ][ 3 ];
-double minver_aa[ 3 ][ 3 ];
-double minver_a_i[ 3 ][ 3 ];
-double minver_det;
+float minver_b[ 3 ][ 3 ];
+float minver_c[ 3 ][ 3 ];
+float minver_aa[ 3 ][ 3 ];
+float minver_a_i[ 3 ][ 3 ];
+float minver_det;
 
 /*
     Arithmetic math functions
 */
 
 
-double minver_fabs( double n )
+float minver_fabs( float n )
 {
-  double f;
+  float f;
 
   if ( n >= 0 )
     f = n;
@@ -73,7 +73,7 @@ double minver_fabs( double n )
 int  minver_mmul( int row_a, int col_a, int row_b, int col_b )
 {
   int i, j, k, row_c, col_c;
-  double w;
+  float w;
 
   row_c = row_a;
   col_c = col_b;
@@ -99,12 +99,12 @@ int  minver_mmul( int row_a, int col_a, int row_b, int col_b )
 }
 
 
-int minver_minver( int side, double eps )
+int minver_minver( int side, float eps )
 {
 
   int work[ 500 ], i, j, k, iw;
   int r = 0;
-  double w, wmax, pivot, api, w1;
+  float w, wmax, pivot, api, w1;
 
   if ( side < 2 || side > 500 || eps <= 0.0 )
     return ( 999 );
@@ -205,7 +205,8 @@ void minver_init()
 int minver_return()
 {
   int i,j;
-  double check_sum = 0;
+  float check_sum = 0;
+  int check;
 
   _Pragma( "loopbound min 3 max 3" )
   for ( i = 0; i < 3; i++ ) {
@@ -213,8 +214,9 @@ int minver_return()
     for ( j = 0; j < 3; j++ )
       check_sum += minver_a_i[ i ][ j ];
   }
-  /* Avoid double comparison */
-  return (int)(check_sum*100) != 48;
+  /* Avoid float comparison */
+  check = (int)(check_sum*100); 
+  return !(check == 48 || check == 47 || check == 49);
 }
 
 
@@ -226,7 +228,7 @@ int minver_return()
 void _Pragma( "entrypoint" ) minver_main()
 {
   int i, j;
-  double eps;
+  float eps;
   eps = 1.0e-6;
   _Pragma( "loopbound min 3 max 3" )
   for ( i = 0; i < 3; i++ ) {

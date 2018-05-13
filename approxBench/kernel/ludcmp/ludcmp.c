@@ -33,17 +33,17 @@
 
 void ludcmp_init( void );
 int ludcmp_return( void );
-int  ludcmp_test( int n, double eps );
+int  ludcmp_test( int n, float eps );
 void ludcmp_main( void );
 int main( void );
 
-double ludcmp_a[50][50], ludcmp_b[50], ludcmp_x[50];
+float ludcmp_a[50][50], ludcmp_b[50], ludcmp_x[50];
 int ludcmp_chkerr;
 
 void ludcmp_init( void )
 {
   int             i, j, n = 5;
-  double          w;
+  float          w;
   volatile int    x = 0;
 
   _Pragma( "loopbound min 6 max 6" )
@@ -72,7 +72,7 @@ void ludcmp_init( void )
 int ludcmp_return( void )
 {
   int i, n = 5;
-  double checksum = ludcmp_chkerr;
+  float checksum = ludcmp_chkerr;
 
   _Pragma( "loopbound min 6 max 6" )
   for ( i = 0; i <= n; i++ )
@@ -83,9 +83,9 @@ int ludcmp_return( void )
   return ( ( checksum < 0.000001 && checksum > -0.000001 ) ? 0 : -1 );
 }
 
-double ludcmp_fabs( double n )
+float ludcmp_fabs( float n )
 {
-  double          f;
+  float          f;
 
   if ( n >= 0 )
     f = n;
@@ -95,10 +95,10 @@ double ludcmp_fabs( double n )
   return f;
 }
 
-int ludcmp_test( int n, double eps )
+int ludcmp_test( int n, float eps )
 {
   int             i, j, k;
-  double          w, y[100];
+  float          w, y[100];
 
 
   if ( n > 99 || eps <= 0 )
@@ -166,7 +166,7 @@ int ludcmp_test( int n, double eps )
 void _Pragma( "entrypoint" ) ludcmp_main( void )
 {
   int n = 5;
-  double eps = 1;
+  float eps = 1;
   ludcmp_chkerr = ludcmp_test( n, eps );
 }
 
