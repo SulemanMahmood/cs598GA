@@ -9,7 +9,7 @@ void quicksort_int( int *a, unsigned long n)
 
   _Pragma( "loopbound min 0 max 15" )
   while ( n > 1 ) {
-    pi = a + ( n >> 1 );
+    pi = a + (n >> 1);
 
     tmp = *a;
     *a = *pi;

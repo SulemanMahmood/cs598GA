@@ -18,14 +18,14 @@ def runProgram(programName):
     runCommand(compiler + options + "*.c")
     runCommand(compiler + options + '-mserialize=simple.pml *.c')
     runTimeOutput = runCommand("pasim -v ./a.out ")
-    wcet = runCommand("platin wcet -i simple.pml -b a.out --report")
+#    wcet = runCommand("platin wcet -i simple.pml -b a.out --report")
     
     executionTime = runTimeOutput[runTimeOutput.find("Cycles:")+7:]
     executionTime = int(executionTime[:executionTime.find("\\n")].strip())
 
-    wcet = wcet[wcet.find("cycles:")+7:]
-    wcet = int(wcet[:wcet.find("\\n")].strip())
-    
+#    wcet = wcet[wcet.find("cycles:")+7:]
+#    wcet = int(wcet[:wcet.find("\\n")].strip())
+    wcet = ''
     output=programName + "      " + str(executionTime) + "         " + str(wcet) + '\n'
     print(output)
         
