@@ -17,7 +17,7 @@ The most difficult part of this process is finding the loop bounds and  modeling
 
 
 \subsection{Program Approximations}
-The idea of approximate computation has been around since the time people started doing computations. In computer systems, all floating point computations are essentially approximate computations. In the last decade, research (\cite{Loop}, \cite{Image}, \cite{Canary}) have shown that using aggressive approximations in computer programs still produce results that are acceptable for humans. These aggressive approximation reduce the resources required by the computer to perform the computation. Some frameworks (\cite{Green}, \cite{Knobs}) have also been developed to tune the approximations according to the requirements of the system.
+The idea of approximate computation has been around since the time people started doing computations. In computer systems, all floating point computations are essentially approximate computations. In the last decade, research (\cite{Loop}, \cite{Image}, \cite{Canary}) have shown that using aggressive approximations in computer programs still produce results that are acceptable for humans. These aggressive approximation reduce the resources required by the computer to perform the computation. 
 
 In this project, the following approximations are used: 
 \begin{enumerate}
@@ -29,4 +29,13 @@ In this project, the following approximations are used:
 \item Recursion Limiting: The base case of recursion is changed to limit recursion.
 \end{enumerate}
 
+The level of approximation in a program can be controlled by using the so called knobs. The knobs control the aggressiveness of the approximation. All approximations presented in this report except precision reduction have knobs associated with them. The knobs control the following aspects of these approximations.
+\begin{enumerate}
+\item Input Reduction: Knob controls the size of the input slice to be processed.
+\item Loop Perforation: Knob controls how many iterations of the loop can be skipped.
+\item Under-sampling and Extrapolation: Knob controls the size of sample taken from input. It also acts as a scaling factor for the output.
+\item Loop Truncation: Knob controls how many loop iterations may be skipped.
+\item Recursion Limiting: Knob controls the possible number of leaf nodes.
+\end{enumerate}
 
+Some frameworks (\cite{Green}, \cite{Knobs}) dynamically determine the approximation knob values to meet energy or accuracy requirements of the systems. This process is called auto tuning.

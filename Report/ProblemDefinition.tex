@@ -1,14 +1,43 @@
-\section{Property Definition}
-In order to model check properties of an IOT system, we need to define the properties that need to be checked. In this project, we explore safety properties in an IOT system. In general, safety properties check that system never reaches an error state. In the context of an IOT system we define an error state when there is an inconsistency between the state information stored in different components. For example: Consider an IOT system with a smart door lock which is configured to keep the user updated about its status. An unlock command is triggered based on some rules in the cloud. The door is unlocked and a notification is sent to the user about the change in status. If this notification is lost, the user will consider the door locked. Now our two components (user and smart lock) of the IOT information disagree on the state of the door. This would be an error state. 
+\section{Experiment Subjects}
+The first step in performing the experiments was the selection of programs that can be used for approximations and WCET measurements. TACLe Benchmarks \cite{Taclebench} is a benchmark suite for WCET estimation tools. This benchmark combines multiple benchmarks for real time systems. The benchmark contains 53 programs which are subdivided into 5 categories. The kernels category includes 23 programs. All 23 programs from the kernel category were manually analyzed to assess approximation feasibility. 8 programs were found to have features that could be used for approximation. Table \ref{description} shows the 8 benchmarks, the description of the program and the approximation used in the program.
 
-The simple definition provided above is not enough to capture an error state. In the above example, the user and the lock will have inconsistent information immediately after the door is unlocked. But this inconsistency will get resolved as soon as user receives a notification about the change. Therefore just identifying an inconsistency is not enough. In fact, we believe that in a system which doesn't have any race conditions, all inconsistencies should eventually get resolved when communication is reliable. We need to describe the property to check that inconsistencies will survive in the system. The inconsistencies can easily survive when communication is unreliable. In our example if the notification is lost, there is no way to resolve the inconsistency unless the lock status changes again and new notification is successful. In order to account for the time it takes the system to resolve the inconsistency under normal circumstances, we use the PCTL bounded until operator. In our example, the property can be described as folllows:
+One of the major advantages of using TACLe Benchmarks was the presence of annotations that WCET tools expect from the developer. The paper for TACLe Benchmarks showed that the benchmark was checked for errors using a PATMOS \cite{Patmos} simulator. The PATMOS simulator is part of the T-Crest project \cite{tcrest} which aims to design computer architectures that have predictable execution times for the program. They are trying to address the second of the two challenges that we identified for WCET analysis. The problem is to make processors more time predictable while keeping the advances of last 4 decades in place. The project has proposed a new architecture called PATMOS and their Github repository \cite{gtcrest}  provides numerous tools related to this architecture. In this project, their llvm and clang port has been used for compiling the subjects. The PATMOS simulator, PASIM, has been used to run the programs and static analysis based WCET tool, PLATIN, has been used for WCET estimates. More accurate WCET estimates can be achieved by using Absint's aiT tool but it is not free.
 
-{\centering
-$(LockStatus = open)\;  U^{\leq t}\; (LockStatus = open\:  \cap\: User_{LockStatus} = open)$\par
-}
+\begin{table}[]
+  \centering
+  \caption{Benchmarks and their descriptions}
+  \label{description}
+  \begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{Program} & \textbf{Description}                   & \textbf{Approximation}           \\ \hline
+    BinarySearch     & Search in a sorted array               & Input Reduction                  \\ \hline
+    BubbleSort       & Sort an unsorted array                 & Loop Perforation                 \\ \hline
+    CountNegative    & Count negative numbers in a matrix     & Under-sampling and Extrapolation \\ \hline
+    LUDecomposition  & Performs LU decomposition of a matrix  & Precision Reduction              \\ \hline
+    Prime            & Checks is a number is prime            & Precision Reduction              \\ \hline
+    QuickSort        & Sort an unsorted array                 & Recursion Limiting               \\ \hline
+    Stats            & Compute statistical measures on arrays & Loop Truncation                  \\ \hline
+  \end{tabular}
+\end{table}
 
-Here the time bound \textit{t} allows the system a bounded time to settle. System settling in a bounded time is a desirable property. Statistical model checking can provide probabilistic guarantees on the settling time. We can summarize two important aspects which need to be evaluated.
+All the experiments presented in this report were conducted on the default processor configuration. The default configuration is common for the clang port, simulator and static WCET tool. Some features of the processor configuration are listed below:
+\begin{itemize}
+\item Number of Cores = 1
+\item Processor frequency = 80MHz
+\item Memory attached = 2MB
+\item Memory transfer time = 21 cycles
+\item Transfer burst size = 16 bytes
+\item Data cache = 2kB Direct Mapped Cache with line size of 128bits
+\item Instruction cache = 4kB FIFO Cache with line size of 128bits
+\end{itemize}
+
+For each benchmark we ask the following question:
 \begin{enumerate}
-  \item In the face of unreliable communication, the probability that the property holds will be $<1$. How sharply does it fall in the face of unreliable communication? How do retries affect this probability?
-  \item The probability that the property holds will depend on the selected value of the bound. How does this probability varies with this bound?
+\item How does accuracy of the output change with the knob setting for the approximation?
+\item How does the WCET change with the knob setting for the approximation?
+\item How does WCET vary with the accuracy of the output?
 \end{enumerate}
+
+The answer to the last question can be derived directly form the answers to the first two questions but it is important to present it explicitly so that WCET and accuracy trade-off can be presented clearly. We present WCET is the dependent variable and accuracy as a control variable in the last question because we can directly control accuracy by tuning the approximation knobs.
+
+%% Next section on results
