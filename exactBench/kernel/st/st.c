@@ -130,8 +130,8 @@ float st_sqrtf( float val )
   if ( val == 0 )
     x = 0;
   else {
-    _Pragma( "loopbound min 19 max 19" )
-    for ( i = 1; i < 20; i++ ) {
+    _Pragma( "loopbound min 20 max 20" )
+    for ( i = 1; i <= 20; i++ ) {
       if ( !flag ) {
         dx = ( val - ( x * x ) ) / ( 2.0f * x );
         x = x + dx;
