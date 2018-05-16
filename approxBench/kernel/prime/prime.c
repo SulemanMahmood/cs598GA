@@ -1,22 +1,15 @@
-unsigned char approx_prime ( unsigned int n, int prime[], int size);
+unsigned char approx_prime ( unsigned int n);
 int main( void );
 
-typedef struct primes {
-  int primesAr[25];
-  int size[10];
-} primes;
-
-primes data = {
-{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97},
-{4, 8, 10, 12, 15, 17, 19, 22, 24, 25}
-}; 
-
-unsigned char approx_prime ( unsigned int n, int prime[25], int size)
+unsigned char approx_prime ( unsigned int n)
 {
   int i;
-  _Pragma( "loopbound min 1 max 25" )
-  for (i = 0; i < size; i++){
-    if(n % prime[i] == 0)
+  if ( n % 2  == 0 )
+    return 1;
+
+  _Pragma( "loopbound min 1 max 48" )
+  for (i = 3; i*i*2 <= n; i += 2){
+    if(n % i == 0)
       return 1;
   }
   return 0;
@@ -24,7 +17,7 @@ unsigned char approx_prime ( unsigned int n, int prime[25], int size)
 
 int main( void )
 {
-  approx_prime(99999, data.primesAr, data.size[9]);
+  approx_prime(99999);
   return 0 ;
 }
 
