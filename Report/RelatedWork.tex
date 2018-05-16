@@ -1,20 +1,5 @@
-\section{Related Work}
+\section{Future Directions}
+This project show the feasibility of some approximations in real time systems. The data shows that approximate versions of the programs can give developers more options to chose from. For reasonably accurate, the system designers can chose energy efficiency or faster system according to their preferences.
 
-\subsection{IoT}
-Model checking for IOT systems in a relatively new application of model checking. At a conceptual  level, this is not different from applying the principals of model checking to any event driven distributed system. The challenge here is the wide variety of hardware that is available in the market. A model built for one system may no generalize to other devices performing similar tasks. Tabrizi and Pattabiraman \cite{Tabrizi} recently built a formal model for a smart energy meter and analyzed it under adversarial situation to find sequences of event which would result compromised operation. They had full access to the code running on the device to build a faithful model that could be used to expose faults. As mentioned earlier their results do not generalize to other products in the market. As far as we know, this project represents the first effort to build a statistical model of any IOT system.
+An interesting idea in this domain is the about making real time operating system aware of the fact that they are working with approximate systems so that they can use approximate systems appropriately. Operating systems that are aware of the fact that they are dealing with approximate system may tell the consumer processes that they are using result of an approximate process. Additionally operating systems can expose functionality for programs to query their remaining time budget. Based on the time budget available, approximate programs can automatically set the knobs to obtain the most accurate result within the available time limit. This concept is similar to frameworks like Green \cite{Green} which adjust the knobs according to the accuracy requirements.
 
-\subsection{Other Techniques}
-Message dropping can be considered to be an rare event. With regular
-sampling methods, such rare events can cause the required number of
-samples to be infeasible.
-
-Several methods have been proposed to overcome this issue. Importance
-sampling where the system is biased such that the rare events are more
-likely to occur is one such method. Several variations of this method
-have been implemented for multiple scenarios \cite{rajan}, \cite{ballarini}.
-
-Other methods of reducing variance also been proposed to address this
-problem \cite{Jegourel}, \cite{lecuyer}.  Applying these methods can
-help us make the evaluation more efficient. But we found that we were
-able to handle the complexity of our models without the need for
-these methods.

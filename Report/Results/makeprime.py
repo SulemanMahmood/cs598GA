@@ -32,7 +32,7 @@ t.write('  \\begin{tabular}{|l|l|l|}\n')
 t.write('    \\hline\n')
 t.write('    \\textbf{Multiplier} & \\textbf{Accuracy}  & \\textbf{WCET}   \\\\ \\hline\n')
 for i in range(knobs):
-    t.write(approx[i][1] +  '\\% &  ' + approx[i][3] + '\\% &' +  approx[i][-1] + '\\%   \\\\ \\hline\n')
+    t.write(approx[i][1] +  ' &  ' + approx[i][3] + '\\% &' +  approx[i][-1] + '\\%   \\\\ \\hline\n')
 t.write('  \\end{tabular}\n')
 t.write('\\end{table}\n')
 t.close()

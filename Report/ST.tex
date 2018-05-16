@@ -1,0 +1,13 @@
+\subsection{Statistical Calculations}
+This program takes two arrays of size 1000 each as input and calculates their mean, variance and standard deviation. Finally the correlation coefficient is also calculated. The calculation for standard deviation and correlation coefficient require computation of square root. The square root is calculated using Newton–Raphson method. The default value number of iterations it set to 20. This is the method that we convert to an approximate method by changing the default limit in to code to an approximation knob. This gives us a simple loop truncation approximation. The accuracy of the program is measured by measuring the accuracy of the standard deviation and correlation coefficient calculated by the program. This is an indirect way of measuring the accuracy. The approximation in this program is in a function that forms a very small part of the overall program therefore we expect a very small change in WCET. The accuracy is measured by using 999 array pairs drawn from the data set used for bubblesort and quicksort. The results for the statistical calculations are shown in Table \ref{stT}.  We can answer our question by inspecting the table data as follows:
+
+\input{Results/sttable}
+
+ \begin{enumerate}
+ \item The accuracy increases rapidly as loop limit increases for both outputs but both of them start rising at different loop limits.
+ \item WCET changes are small since the approximated function is only a small part of the operation being performed.
+ \item We observe that a loop limit of 13 gives us good accuracy on both outputs therefore it sees reasonable to limit the loop to this level. According the the values obtained from 999 sample points, this will save 1.26\% time.
+ \end{enumerate}
+
+It is interesting to note that standard deviation and correlation coefficient converge at different loop limits. This clearly shows us that approximate computations are highly input dependent and an approximation that works for one class of input may not work for another class of inputs.
+

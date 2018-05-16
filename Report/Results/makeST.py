@@ -4,8 +4,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
-f = open ('QuickSort', 'r')
-t = open ('quicksorttable.tex', 'w')
+f = open ('St', 'r')
+name = 'st'
+t = open (name + 'table.tex', 'w')
 
 exact = f.readline().split(',')
 
@@ -15,7 +16,7 @@ for i in range(knobs):
     approx.append(f.readline().split(','))
 
 for i in range(knobs):
-#    approx[i].append('%.2f' % (100 / float(approx[i][1])))
+    #approx[i].append('%.2f' % (100 / float(approx[i][1])))
     wcet = float(approx[i][2])
     exactt = float(exact[2])
     approx[i].append('%.2f' % (wcet * 100/ exactt))
@@ -25,18 +26,18 @@ f.close()
 # Table
 t.write('\\begin{table}[]\n')
 t.write('  \\centering\n')
-t.write('  \\caption{Quicksort Results}\n')
-t.write('  \\label{quicksortT}\n')
-t.write('  \\begin{tabular}{|l|l|l|l|}\n')
+t.write('  \\caption{Statistical Calculation Results}\n')
+t.write('  \\label{' + name + 'T}\n')
+t.write('  \\begin{tabular}{|l|l|l|l|l|l|}\n')
 t.write('    \\hline\n')
-t.write('    \\textbf{Recursion Limit} & \\textbf{Accuracy}  & \\textbf{Standard Dev.}  & \\textbf{WCET}           \\\\ \\hline\n')
+t.write('    \\textbf{Loop Limit} & \\textbf{SD Accuracy}  & \\textbf{SD Standard Dev.}  & \\textbf{Correlation Accuracy}  & \\textbf{Correlation Standard Dev.}  & \\textbf{WCET}           \\\\ \\hline\n')
 for i in range(knobs):
-    t.write(approx[i][1] +  ' &  ' + approx[i][3] + '\\% &' + approx[i][4].strip() + '\\% &'  +  approx[i][-1] + '\\%   \\\\ \\hline\n')
+    t.write(approx[i][1] +  ' &  ' + approx[i][3] + '\\% &' + approx[i][4].strip() +  ' &  ' + approx[i][5] + '\\% &' + approx[i][6].strip()  + '\\% &'  +  approx[i][-1] + '\\%   \\\\ \\hline\n')
 t.write('  \\end{tabular}\n')
 t.write('\\end{table}\n')
 t.close()
 
-# figure 1 Accuracy vs log(Skip %age)
+# figure 1 Accuracy vs Skip %age
 x = []
 y = []
 
@@ -50,9 +51,9 @@ plt.plot(x,y,'bo-')
 # smooth = spline(x,y,xnew)
 # plt.plot(xnew,smooth)
 
-plt.xlabel('Recursion Limit')
+plt.xlabel('Loop Limit')
 plt.ylabel('Accuracy')
-plt.savefig('quicksort1.eps')
+plt.savefig(name + '1.eps')
 plt.close()
 
 # figure 2 WCET vs log(Neighborhood Size)
@@ -66,9 +67,9 @@ plt.plot(x,z,'bo-')
 # smooth = spline(x,z,xnew)
 # plt.plot(xnew,smooth)
 
-plt.xlabel('Recursion Limit')
+plt.xlabel('Loop Limit')
 plt.ylabel('WCET')
-plt.savefig('quicksort2.eps')
+plt.savefig(name + '2.eps')
 plt.close()
 
 # figure 3 WCET vs Accuracy
@@ -81,5 +82,5 @@ plt.plot(y,z,'bo-')
 
 plt.xlabel('Accuracy')
 plt.ylabel('WCET')
-plt.savefig('quicksort3.eps')
+plt.savefig(name + '3.eps')
 plt.close()

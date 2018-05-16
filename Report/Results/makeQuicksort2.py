@@ -31,7 +31,7 @@ t.write('  \\begin{tabular}{|l|l|l|l|}\n')
 t.write('    \\hline\n')
 t.write('    \\textbf{Recursion Limit} & \\textbf{Accuracy}  & \\textbf{Standard Dev.}  & \\textbf{Average Case Time}           \\\\ \\hline\n')
 for i in range(knobs):
-    t.write(approx[i][1] +  '\\% &  ' + approx[i][3] + '\\% &' + approx[i][4].strip() + '\\% &'  +  approx[i][-1] + '\\%   \\\\ \\hline\n')
+    t.write(approx[i][1] +  ' &  ' + approx[i][3] + '\\% &' + approx[i][4].strip() + '\\% &'  +  approx[i][-1] + '\\%   \\\\ \\hline\n')
 t.write('  \\end{tabular}\n')
 t.write('\\end{table}\n')
 t.close()
