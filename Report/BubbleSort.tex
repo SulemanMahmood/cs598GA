@@ -1,4 +1,4 @@
-\subsection{Binary Search}
+\subsection{Bubblesort}
 Bubble sort is a simple sorting algorithm for sorting arrays. The algorithm consists of two nested loops. The outer loop traverses the array and the inner loop traverses the part of the array starting from the current position of the outer loop. The inner loop is the workhorse here which swaps the elements if they are in the wrong order. The worst case for the algorithm occurs when the array to be sorted is actually sorted in the reverse order.
 
 One important question about sorting is measuring the accuracy of sorting. Checking if an array is sorted is a binary question with true or false answer. Therefore in order to evaluate an approximate algorithm we need to define a measure of degree of sortedness of an array. We use the number of inversion remaining after running the approximate algorithm as a measure of sortedness. For example, if an array had 250000 inversions before sorting and it has 2500 inversions after the approximate sorting algorithm ends then the output is said to 99\% accuracy since it resolved 99\% of the inversions.
@@ -12,18 +12,18 @@ The results show the following with respect to our questions:
 \begin{figure}
   \includegraphics[width=0.95\linewidth]{Results/bubblesort1.eps}
   \caption{Accuracy vs Skipped Iterations}
-  \label{binarysearch1}
+  \label{bubblesort1}
 \end{figure}
 
 \begin{figure}
-  \includegraphics[width=0.95\linewidth]{Results/binarysearch1.eps}
+  \includegraphics[width=0.95\linewidth]{Results/bubblesort2.eps}
   \caption{WCET vs Skipped Iterations)}
-  \label{binarysearch2}
+  \label{bubblesort2}
 \end{figure}
 
 \begin{enumerate}
 \item The relation between accuracy and the number of skipped iterations is almost linear with negative slope. Accuracy is high when fewer loops are skipped. This is shown in figure \ref{bubblesort1} 
-\item The relation between WCET and number of loops skipped is almost linear. The exception to the rule is the the point where every 7th iteration is skipped. The conjecture here is that the mod 7 computation somehow takes more time then the other mod computations. This anomaly is clearly visible in figure \ref{bubblesort2}  This relation is shown clearly in figure \ref{binarysearch2}.
+\item The relation between WCET and number of loops skipped is almost linear. The exception to the rule is the the point where every 7th iteration is skipped. The conjecture here is that the mod 7 computation somehow takes more time then the other mod computations. This anomaly is clearly visible in figure \ref{bubblesort2}.
   \item The first two relations being linear means that the last relation is also linear. This makes a good case for not using this approximation. Spending 90\% time to get 90\% accuracy is not good enough.
 \end{enumerate}
 
